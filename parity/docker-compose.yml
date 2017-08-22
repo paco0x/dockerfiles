@@ -1,0 +1,53 @@
+version: '3'
+
+volumes:
+  vhosts:
+  html:
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy:alpine
+    container_name: nginx-proxy
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      DEFAULT_HOST: HOSTNAME
+    labels:
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: ""
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /certs:/etc/nginx/certs:ro
+      - vhosts:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    volumes:
+      - /certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - vhosts:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+    depends_on:
+      - nginx-proxy
+
+  parity:
+    image: parity/parity:v1.7.0
+    container_name: parity
+    environment:
+      VIRTUAL_HOST: HOSTNAME
+      VIRTUAL_PORT: 8545
+      LETSENCRYPT_HOST: HOSTNAME
+      LETSENCRYPT_EMAIL: EMAIL
+    volumes:
+      - /data:/root/.local/share/io.parity.ethereum
+    command: "--jsonrpc-interface all"
+
+  shadowsocks:
+    image: liaoishere/shadowsocks
+    container_name: shadowsocks
+    ports:
+      - 1080:1080
+    environment:
+      PASSWORD: PASSWORD
