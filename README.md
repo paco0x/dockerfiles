@@ -1,7 +1,16 @@
-### Run shadowsocks
+### Run shadowsocks with kcptun
+1. clone the project
+
+2. install docker-compose
 ```
-$ docker pull liaoishere/shadowsocks
-$ docker run --restart unless-stopped -e "PASSWORD=pass" --name shadowsocks -p 1080:1080 -d liaoishere/shadowsocks
+$ sudo curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+```
+
+3. replace the password in docker-compose.yml
+
+4. run compose
+```
+$ docker-compose up -d
 ```
 
 ### Run parity with SSL enabled
