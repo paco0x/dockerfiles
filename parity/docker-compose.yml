@@ -43,11 +43,3 @@ services:
     volumes:
       - /data:/root/.local/share/io.parity.ethereum
     command: "--jsonrpc-interface all"
-
-  shadowsocks:
-    image: liaoishere/shadowsocks
-    container_name: shadowsocks
-    ports:
-      - 1080:1080
-    environment:
-      PASSWORD: PASSWORD

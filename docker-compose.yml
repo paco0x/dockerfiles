@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  shadowsocks:
+    image: liaoishere/shadowsocks
+    container_name: shadowsocks
+    ports:
+      - 2048:1080
+    environment:
+      PASSWORD: PASSWORD
+    restart: always
+
+  kvptun:
+    image: liaoishere/kcptun
+    container_name: kcptun
+    ports:
+      - 2048:1080/udp
+    environment:
+      PASSWORD: PASSWORD
+      TARGET: shadowsocks:1080
+    restart: always
