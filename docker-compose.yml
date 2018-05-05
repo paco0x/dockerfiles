@@ -10,7 +10,7 @@ services:
       PASSWORD: PASSWORD
     restart: always
 
-  kvptun:
+  kcptun:
     image: liaoishere/kcptun
     container_name: kcptun
     ports:
