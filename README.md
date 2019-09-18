@@ -1,14 +1,18 @@
-### Run shadowsocks with kcptun
-1. clone the project
+### Run shadowsocks-libev with v2ray-plugin
 
-2. install docker-compose
-```
-$ sudo curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-```
+1. Clone the project
 
-3. replace the password in docker-compose.yml
+2. Install docker-compose and docker
 
-4. run compose
+3. Config your DNS records of your VPS(cloudflare is recommended)
+
+4. Generate certs using acme.sh
+
+Please refer to: [acme.sh](https://github.com/Neilpang/acme.sh)
+
+5. Replace the password and domain names in docker-compose.yml
+
+6. Run compose
 ```
 $ docker-compose up -d
 ```
