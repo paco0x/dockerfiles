@@ -1,21 +1,26 @@
 version: '3'
 
 services:
-  shadowsocks:
-    image: liaoishere/shadowsocks
-    container_name: shadowsocks
+  shadowsocks-libev:
+    container_name: shadowsocks-libev
+    image: liaoishere/shadowsocks-libev:latest
     ports:
-      - 2048:1080
+      - 8880:8388/tcp
+      - 8880:8388/udp
     environment:
-      PASSWORD: PASSWORD
+      - PASSWORD=PASSWORD
+      - ARGS=--plugin v2ray-plugin --plugin-opts server;host=vps.example.com;path=/v2ray -u
     restart: always
 
-  kcptun:
-    image: liaoishere/kcptun
-    container_name: kcptun
+  shadowsocks-libev-tls:
+    container_name: shadowsocks-libev-tls
+    image: liaoishere/shadowsocks-libev:latest
     ports:
-      - 2048:1080/udp
+      - 8443:8388/tcp
+      - 8443:8388/udp
+    volumes:
+      - /root/.acme.sh:/root/.acme.sh:ro
     environment:
-      PASSWORD: PASSWORD
-      TARGET: shadowsocks:1080
+      - PASSWORD=PASSWORD
+      - ARGS=--plugin v2ray-plugin --plugin-opts server;tls;host=vps.example.com;path=/v2ray;cert=/root/.acme.sh/vps.example.com/vps.example.com.cer;key=/root/.acme.sh/vps.example.com/vps.example.com.key -u
     restart: always
