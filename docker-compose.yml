@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
   shadowsocks-libev:
@@ -8,19 +8,34 @@ services:
       - 8880:8388/tcp
       - 8880:8388/udp
     environment:
-      - PASSWORD=PASSWORD
-      - ARGS=--plugin v2ray-plugin --plugin-opts server;host=vps.example.com;path=/v2ray -u
+      - PASSWORD=${PASSWORD}
+      - ARGS=--plugin v2ray-plugin --plugin-opts server;host=${DOMAIN_NAME};path=/v2ray -u
     restart: always
 
   shadowsocks-libev-tls:
     container_name: shadowsocks-libev-tls
     image: liaoishere/shadowsocks-libev:latest
+    depends_on:
+      - acme-cron
     ports:
       - 8443:8388/tcp
       - 8443:8388/udp
     volumes:
-      - /root/.acme.sh:/root/.acme.sh:ro
+      - cert:/cert:ro,nocopy
     environment:
-      - PASSWORD=PASSWORD
-      - ARGS=--plugin v2ray-plugin --plugin-opts server;tls;host=vps.example.com;path=/v2ray;cert=/root/.acme.sh/vps.example.com/vps.example.com.cer;key=/root/.acme.sh/vps.example.com/vps.example.com.key -u
+      - PASSWORD=${PASSWORD}
+      - ARGS=--plugin v2ray-plugin --plugin-opts server;tls;host=${DOMAIN_NAME};path=/v2ray;cert=/cert/${DOMAIN_NAME}/${DOMAIN_NAME}.cer;key=/cert/${DOMAIN_NAME}/${DOMAIN_NAME}.key -u
     restart: always
+
+  acme-cron:
+    container_name: acme-cron
+    image: liaoishere/acme-cron
+    volumes:
+      - cert:/acme/data
+    environment:
+      - CF_Token=${CF_Token}
+      - CF_Account_ID=${CF_Account_ID}
+    restart: always
+
+volumes:
+  cert:
