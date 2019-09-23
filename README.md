@@ -22,7 +22,8 @@ $ docker-compose up -d
 Run acme.sh in docker to generate certs in shared docker volume:
 
 ```
-docker exec -it acme-cron acme.sh --log --issue --dns dns_cf -d ${DOMAIN_NAME}
+$ docker exec -it acme-cron sh --login
+# acme.sh --log --issue --dns dns_cf -d ${DOMAIN_NAME}
 ```
 
 After that, your certs ared generated in the docker volume. Check shadowsocks-libev container status, it should be OK after this step.
