@@ -2,6 +2,8 @@
 
 You can use this repo to run shadowsocks-libev with v2ray-plugin behind cloudflare, and all services are running in docker container(including acme.sh cronjob).
 
+You can use acme.sh to update your SSL Certs
+
 1. Clone the project
 
 2. Install docker-compose and docker
