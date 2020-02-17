@@ -24,7 +24,7 @@ services:
       - cert:/cert:ro,nocopy
     environment:
       - PASSWORD=${PASSWORD}
-      - ARGS=--plugin v2ray-plugin --plugin-opts server;tls;host=${DOMAIN_NAME};path=/v2ray;cert=/cert/${DOMAIN_NAME}/${DOMAIN_NAME}.cer;key=/cert/${DOMAIN_NAME}/${DOMAIN_NAME}.key -u
+      - ARGS=--plugin v2ray-plugin --plugin-opts server;tls;host=${DOMAIN_NAME};path=/v2ray;cert=/cert/${DOMAIN_NAME}/fullchain.cer;key=/cert/${DOMAIN_NAME}/${DOMAIN_NAME}.key -u
     restart: always
 
   acme-cron:
