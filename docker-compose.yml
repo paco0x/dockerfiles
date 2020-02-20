@@ -27,6 +27,18 @@ services:
       - ARGS=--plugin v2ray-plugin --plugin-opts server;tls;host=${DOMAIN_NAME};path=/v2ray;cert=/cert/${DOMAIN_NAME}/fullchain.cer;key=/cert/${DOMAIN_NAME}/${DOMAIN_NAME}.key -u
     restart: always
 
+  v2ray-tls:
+    container_name: v2ray-tls
+    image: v2ray/official:latest
+    depends_on:
+      - acme-cron
+    ports:
+      - 8080:8080/tcp
+    volumes:
+      - cert:/cert:ro,nocopy
+      - ${V2RAY_CONFIG}:/etc/v2ray/config.json
+    restart: always
+
   acme-cron:
     container_name: acme-cron
     image: liaoishere/acme-cron

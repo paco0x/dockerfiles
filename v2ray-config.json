@@ -1,0 +1,34 @@
+{
+  "inbounds": [
+    {
+      "port": 8880,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "id": "4785df55-1938-4059-9677-9603f19bec21",
+            "alterId": 4
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "tls",
+        "tlsSettings": {
+          "certificates": [
+            {
+              "certificateFile": "/cert/${DOMAIN_NAME}/fullchain.cer",
+              "keyFile": "/cert/${DOMAIN_NAME}/${DOMAIN_NAME}.key"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {}
+    }
+  ]
+}
