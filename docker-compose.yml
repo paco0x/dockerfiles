@@ -27,8 +27,8 @@ services:
       - ARGS=--plugin v2ray-plugin --plugin-opts server;tls;host=${DOMAIN_NAME};path=/v2ray;cert=/cert/${DOMAIN_NAME}/fullchain.cer;key=/cert/${DOMAIN_NAME}/${DOMAIN_NAME}.key -u
     restart: always
 
-  v2ray-tls:
-    container_name: v2ray-tls
+  v2ray-ws:
+    container_name: v2ray-ws
     image: v2ray/official:latest
     depends_on:
       - acme-cron
@@ -37,6 +37,18 @@ services:
     volumes:
       - cert:/cert:ro,nocopy
       - ${V2RAY_CONFIG}:/etc/v2ray/config.json
+    restart: always
+
+  caddy:
+    container_name: caddy
+    image: caddy/caddy
+    depends_on:
+      - acme-cron
+    ports:
+      - 443:443/tcp
+    volumes:
+      - cert:/cert:ro,nocopy
+      - ${CADDY_FILE}:/etc/caddy/Caddyfile
     restart: always
 
   acme-cron:

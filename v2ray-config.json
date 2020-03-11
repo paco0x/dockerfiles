@@ -12,15 +12,9 @@
         ]
       },
       "streamSettings": {
-        "network": "tcp",
-        "security": "tls",
-        "tlsSettings": {
-          "certificates": [
-            {
-              "certificateFile": "/cert/${DOMAIN_NAME}/fullchain.cer",
-              "keyFile": "/cert/${DOMAIN_NAME}/${DOMAIN_NAME}.key"
-            }
-          ]
+        "network": "ws",
+        "wsSettings": {
+          "path": "/v2ray"
         }
       }
     }

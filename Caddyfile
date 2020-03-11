@@ -1,0 +1,9 @@
+${DOMAIN_NAME}:443
+@websockets {
+	header Connection *Upgrade*
+	header Upgrade    websocket
+}
+reverse_proxy @websockets v2ray-ws:8080 {
+    header_up -Origin
+}
+tls /cert/${DOMAIN_NAME}/fullchain.cer /cert/${DOMAIN_NAME}/${DOMAIN_NAME}.key
