@@ -1,6 +1,6 @@
 ### Run shadowsocks-libev with v2ray-plugin behind cloudflare
 
-You can use this repo to run shadowsocks-libev with v2ray-plugin behind cloudflare, and all services are running in docker container(including acme.sh cronjob).
+You can use this repo to run shadowsocks-libev with v2ray-plugin or v2ray behind cloudflare, and all services are running in docker container(including acme.sh cronjob).
 
 You can use acme.sh to update your SSL Certs
 
@@ -12,11 +12,11 @@ You can use acme.sh to update your SSL Certs
 
 Cloudflare API token needs read access to Zone.Zone, and write access to Zone.DNS, across all Zones.
 
-4. Replace the password, domain name, cf token and cf account ID in docker-compose.yml
+4. Fillin the password, domain name, cf token and cf account ID in config.ini
 
-5. Run compose
+5. Run bootstrap.sh script, this will start up the docker containers.
 ```
-$ docker-compose up -d
+$ ./bootstrap.sh
 ```
 
 6. Generate acme certs for the first time
