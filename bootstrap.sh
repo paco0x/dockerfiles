@@ -12,6 +12,7 @@ fi
 V2RAY_CONFIG=${BASEPATH}/v2ray-config.json
 CADDY_FILE=${BASEPATH}/Caddyfile
 COMPOSE_FILE=${BASEPATH}/docker-compose.yml
+UUID=$(uuidgen)
 
 sed -ri "s@\\$\{DOMAIN_NAME}@${DOMAIN_NAME}@g" $CADDY_FILE
 
@@ -21,6 +22,8 @@ sed -ri "s@\\$\{PASSWORD}@${PASSWORD}@g" $COMPOSE_FILE
 sed -ri "s@\\$\{DOMAIN_NAME}@${DOMAIN_NAME}@g" $COMPOSE_FILE
 sed -ri "s@\\$\{CF_Token}@${CF_Token}@g" $COMPOSE_FILE
 sed -ri "s@\\$\{CF_Account_ID}@${CF_Account_ID}@g" $COMPOSE_FILE
+
+sed -ri "s@\\$\{UUID}@${UUID}@g" $V2RAY_CONFIG
 
 cd $BASEPATH
 docker-compose up -d

@@ -6,7 +6,7 @@
       "settings": {
         "clients": [
           {
-            "id": "4785df55-1938-4059-9677-9603f19bec21",
+            "id": "${UUID}",
             "alterId": 4
           }
         ]
