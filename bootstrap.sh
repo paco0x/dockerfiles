@@ -30,7 +30,9 @@ COMPOSE_FILE=${BASEPATH}/docker-compose.yml
 PROMETHEUS_CONFIG=${BASEPATH}/prometheus/prometheus.yml
 GRAFANA_PROVISIONING_DIR=${BASEPATH}/grafana/provisioning
 GRAFANA_DASHBOARD_DIR=${BASEPATH}/grafana/dashboards
-UUID=$(uuidgen)
+if [[ -z ${V2RAY_UUID} ]]; then
+    V2RAY_UUID=$(uuidgen)
+fi
 
 sed -ri "s@\\$\{DOMAIN_NAME}@${DOMAIN_NAME}@g" $CADDY_FILE
 
@@ -44,7 +46,7 @@ sed -ri "s@\\$\{PROMETHEUS_CONFIG}@${PROMETHEUS_CONFIG}@g" $COMPOSE_FILE
 sed -ri "s@\\$\{GRAFANA_PROVISIONING_DIR}@${GRAFANA_PROVISIONING_DIR}@g" $COMPOSE_FILE
 sed -ri "s@\\$\{GRAFANA_DASHBOARD_DIR}@${GRAFANA_DASHBOARD_DIR}@g" $COMPOSE_FILE
 
-sed -ri "s@\\$\{UUID}@${UUID}@g" $V2RAY_CONFIG
+sed -ri "s@\\$\{V2RAY_UUID}@${V2RAY_UUID}@g" $V2RAY_CONFIG
 
 cd $BASEPATH
 docker-compose up -d

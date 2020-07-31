@@ -6,7 +6,7 @@
       "settings": {
         "clients": [
           {
-            "id": "${UUID}",
+            "id": "${V2RAY_UUID}",
             "alterId": 4
           }
         ]
