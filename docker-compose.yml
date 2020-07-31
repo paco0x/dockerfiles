@@ -46,6 +46,7 @@ services:
       - acme-cron
     ports:
       - 443:443/tcp
+      - 3000:3000/tcp
     volumes:
       - cert:/cert:ro,nocopy
       - ${CADDY_FILE}:/etc/caddy/Caddyfile
@@ -59,6 +60,35 @@ services:
     environment:
       - CF_Token=${CF_Token}
       - CF_Account_ID=${CF_Account_ID}
+    restart: always
+
+  node-exporter:
+    container_name: node-exporter
+    image: quay.io/prometheus/node-exporter
+    volumes:
+      - /:/host:ro,rslave
+    command: --path.rootfs=/host
+    restart: always
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    volumes:
+      - ${PROMETHEUS_CONFIG}:/etc/prometheus/prometheus.yml
+    depends_on:
+      - node-exporter
+    restart: always
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    volumes:
+      - ${GRAFANA_PROVISIONING_DIR}:/etc/grafana/provisioning
+      - ${GRAFANA_DASHBOARD_DIR}:/var/lib/grafana/dashboards
+    depends_on:
+      - prometheus
     restart: always
 
 volumes:

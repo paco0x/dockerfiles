@@ -1,9 +1,15 @@
-${DOMAIN_NAME}:443
-@websockets {
-	header Connection *Upgrade*
-	header Upgrade    websocket
+vps-hk.liaoph.com:443 {
+    @websockets {
+        header Connection *Upgrade*
+        header Upgrade    websocket
+    }
+    reverse_proxy @websockets v2ray-ws:8080 {
+        header_up -Origin
+    }
+    tls /cert/vps-hk.liaoph.com/fullchain.cer /cert/vps-hk.liaoph.com/vps-hk.liaoph.com.key
 }
-reverse_proxy @websockets v2ray-ws:8080 {
-    header_up -Origin
+
+vps-hk.liaoph.com:3000 {
+    reverse_proxy grafana:3000
+    tls /cert/vps-hk.liaoph.com/fullchain.cer /cert/vps-hk.liaoph.com/vps-hk.liaoph.com.key
 }
-tls /cert/${DOMAIN_NAME}/fullchain.cer /cert/${DOMAIN_NAME}/${DOMAIN_NAME}.key

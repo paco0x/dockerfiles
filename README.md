@@ -2,6 +2,8 @@
 
 You can use this repo to run shadowsocks-libev with v2ray-plugin or v2ray behind cloudflare, and all services are running in docker container(including acme.sh cronjob).
 
+Monitoring is provided through grafana, by default it uses port 3000.
+
 You can use acme.sh to update your SSL Certs
 
 1. Clone the project
