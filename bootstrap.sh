@@ -2,10 +2,11 @@
 set -eu -o pipefail
 
 BASEPATH="$(realpath $(dirname ${BASH_SOURCE[0]}))"
-source ${BASEPATH}/config.ini
+ENVFILE=${BASEPATH}/.env
+source ${ENVFILE}
 
 if [[ -z ${DOMAIN_NAME} || -z ${PASSWORD} || -z ${CF_Token} || -z ${CF_Account_ID} ]]; then
-    echo "Please fillin all items in config.ini" >&2
+    echo "Please fillin all items in ${ENVFILE}" >&2
     exit 1
 fi
 
@@ -33,19 +34,14 @@ GRAFANA_DASHBOARD_DIR=${BASEPATH}/grafana/dashboards
 if [[ -z ${V2RAY_UUID} ]]; then
     V2RAY_UUID=$(uuidgen)
 fi
+sed -ri "s@V2RAY_UUID=.*@V2RAY_UUID=${V2RAY_UUID}@g" ${ENVFILE}
+sed -ri "s@CADDY_FILE=.*@CADDY_FILE=${CADDY_FILE}@g" ${ENVFILE}
+sed -ri "s@V2RAY_CONFIG=.*@V2RAY_CONFIG=${V2RAY_CONFIG}@g" ${ENVFILE}
+sed -ri "s@GRAFANA_PROVISIONING_DIR=.*@GRAFANA_PROVISIONING_DIR=${GRAFANA_PROVISIONING_DIR}@" ${ENVFILE}
+sed -ri "s@GRAFANA_DASHBOARD_DIR=.*@GRAFANA_DASHBOARD_DIR=${GRAFANA_DASHBOARD_DIR}@" ${ENVFILE}
+sed -ri "s@PROMETHEUS_CONFIG=.*@PROMETHEUS_CONFIG=${PROMETHEUS_CONFIG}@g" ${ENVFILE}
 
 sed -ri "s@\\$\{DOMAIN_NAME}@${DOMAIN_NAME}@g" $CADDY_FILE
-
-sed -ri "s@\\$\{V2RAY_CONFIG}@${V2RAY_CONFIG}@g" $COMPOSE_FILE
-sed -ri "s@\\$\{CADDY_FILE}@${CADDY_FILE}@g" $COMPOSE_FILE
-sed -ri "s@\\$\{PASSWORD}@${PASSWORD}@g" $COMPOSE_FILE
-sed -ri "s@\\$\{DOMAIN_NAME}@${DOMAIN_NAME}@g" $COMPOSE_FILE
-sed -ri "s@\\$\{CF_Token}@${CF_Token}@g" $COMPOSE_FILE
-sed -ri "s@\\$\{CF_Account_ID}@${CF_Account_ID}@g" $COMPOSE_FILE
-sed -ri "s@\\$\{PROMETHEUS_CONFIG}@${PROMETHEUS_CONFIG}@g" $COMPOSE_FILE
-sed -ri "s@\\$\{GRAFANA_PROVISIONING_DIR}@${GRAFANA_PROVISIONING_DIR}@g" $COMPOSE_FILE
-sed -ri "s@\\$\{GRAFANA_DASHBOARD_DIR}@${GRAFANA_DASHBOARD_DIR}@g" $COMPOSE_FILE
-
 sed -ri "s@\\$\{V2RAY_UUID}@${V2RAY_UUID}@g" $V2RAY_CONFIG
 
 cd $BASEPATH
