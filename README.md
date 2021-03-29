@@ -14,7 +14,7 @@ You can use acme.sh to update your SSL Certs
 
 Cloudflare API token needs read access to Zone.Zone, and write access to Zone.DNS, across all Zones.
 
-4. Fillin the password, domain name, cf token and cf account ID in config.ini
+4. Fillin the password, domain name, cf token and cf account ID in .env
 
 5. Run bootstrap.sh script, this will start up the docker containers.
 ```
